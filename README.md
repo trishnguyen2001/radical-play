@@ -23,3 +23,7 @@ My project will allow its users to rant their thoughts and feelings in a chat ro
 |  04/21   |                      Chat function                      |
 |  04/24   | Implement p5.scribble.js + other aesthetic improvements |
 |  04/27   |                        Debugging                        |
+
+## PROTOTYPE
+
+[Figma Prototype](https://www.figma.com/proto/xR2EgktpvV5G53fElsAed6/Untitled?node-id=7%3A82&scaling=scale-down&page-id=0%3A1&starting-point-node-id=2%3A2)
