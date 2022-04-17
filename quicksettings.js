@@ -106,7 +106,7 @@
     _controls: null,
     _keyCode: -1,
     _draggable: false,
-    _collapsible: false,
+    _collapsible: true,
     _globalChangeHandler: null,
 
     ////////////////////////////////////////////////////////////////////////////////

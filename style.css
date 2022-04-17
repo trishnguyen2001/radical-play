@@ -1,0 +1,27 @@
+@font-face{
+    font-family:neucha;
+    src:url(assets/Neucha-Regular.ttf);
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+canvas {
+    vertical-align: top;
+}
+button {
+    
+    font-family: neucha;
+    width: 100px;
+    height: 30px;
+    font-size: 24px;
+    font-weight: 900;
+    text-align: center;
+    color: #66769D;
+    border: 0;
+    background-color: #d5dcf0;
+    border-radius: 5px;
+    cursor: pointer;
+}
