@@ -14,6 +14,8 @@ let score;
 let currentMsg;
 let msgs = [];
 let mi;
+let chatbot;
+let y;
 
 //buttons
 let startBtn;
@@ -39,7 +41,7 @@ function setup() {
   gui = createGui(undefined, "CARE LEVEL", "QuickSettings");
   sliderRange(1, 5);
   gui.addGlobals("CareLevel");
-  gui.setPosition(width * 0.075, height * 0.15);
+  gui.setPosition(width * 0.075, height * 0.17);
   gui.resize(width * 0.85, height * 0.15);
   gui.hide();
 
@@ -74,6 +76,8 @@ function setup() {
   //game vars
   score = 0;
   mi = 0;
+  chatbot = "dumb robot";
+  y = 0.33;
   gamestate = "home";
 }
 
@@ -96,7 +100,7 @@ function draw() {
   }
 
   //checks if game is over
-  if (score > 5) {
+  if (score > 20) {
     gamestate = "end";
   }
 
@@ -104,40 +108,10 @@ function draw() {
   //showMsgs();
 }
 
-function startGame() {
-  gamestate = "chat";
-}
-
-function reset() {
-  gamestate = "home";
-  score = 0;
-  msgs = [];
-  mi = 0;
-}
-
-function getMsg() {
-  msg = inp.value();
-  let time = hour() + ":" + minute() + ":" + second();
-  let current = new Msg(time, msg, "user");
-  msgs[mi] = current;
-  console.log(msgs[mi].time + " > " + msgs[mi].sender + " : " + msgs[mi].msg);
-  mi++;
-  score++;
-  inp.value("");
-  showMsgs();
-}
-
-function showMsgs() {
-  let y = 0.6;
-  for (let i = 0; i < mi; i++) {
-    msgs[i].display(y);
-    y += 0.5;
-  }
-}
-
 function homeScreen() {
   restartBtn.hide();
   backBtn.hide();
+  sendBtn.hide();
   gui.hide();
   inp.hide();
   startBtn.show();
@@ -152,9 +126,6 @@ function homeScreen() {
 }
 
 function chatScreen() {
-  //score = 0;
-  msgs = [];
-  //mi = 0;
   inp.show();
   sendBtn.show();
   startBtn.hide();
@@ -163,12 +134,14 @@ function chatScreen() {
 
   //text setup
   textFont(neucha);
-  textSize(height * 0.05);
+  textSize(height * 0.1);
   textAlign(CENTER, CENTER);
   fill(191, 207, 178);
   text("chat screen :)", width * 0.5, height * 0.1);
   gui.show();
+  textSize(height * 0.05);
   text("score : " + score, width * 0.9, height * 0.1);
+  showMsgs();
 }
 
 function endScreen() {
@@ -195,6 +168,65 @@ function keyPressed() {
   }
 }
 
+function getTime() {
+  return hour() + ":" + minute() + ":" + second();
+}
+
+function respond(msg) {
+  let response = "damn that's crazy";
+  return new Msg(getTime(), response, chatbot);
+}
+
+function startGame() {
+  gamestate = "chat";
+}
+
+function reset() {
+  gamestate = "home";
+  score = 0;
+  msgs = [];
+  mi = 0;
+  y = 0.33;
+}
+
+function getMsg() {
+  msg = inp.value();
+  let current = new Msg(getTime(), msg, "user");
+  msgs[mi] = current;
+  console.log(msgs[mi].time + " > " + msgs[mi].sender + " : " + msgs[mi].msg);
+  mi++;
+  score++;
+  inp.value("");
+
+  //bot response
+  msgs[mi] = respond(msg);
+  mi++;
+
+  // console.log(`mi = ${mi}`);
+  // console.log(msgs);
+}
+
+function showMsgs() {
+  let y = 0.33;
+  for (let i = 0; i < mi; i++) {
+    //msgs[i].setY(y);
+    msgs[i].display(y);
+    y += 0.05;
+    console.log("showMsgs: y = " + msgs[i].y);
+    if (y >= 0.78) {
+      scrollMsgs();
+      y = 0.75;
+    }
+  }
+}
+
+function scrollMsgs() {
+  for (let i = 0; i < mi; i++) {
+    msgs[i].redraw(y - 0.2);
+    console.log("scrolling: y = " + msgs[i].y);
+  }
+}
+
 class Msg {
   constructor(time, msg, sender) {
     this.time = time;
@@ -202,17 +234,101 @@ class Msg {
     this.sender = sender;
   }
 
+  setY(y) {
+    this.y = y;
+  }
+
+  redraw() {
+    textFont(neucha);
+    rectMode(CORNER);
+
+    if (this.sender === "user") {
+      //msg label
+      fill(213, 220, 240);
+      textAlign(RIGHT);
+      textSize(height * 0.018);
+      text(this.time + " | " + this.sender, width * 0.83, height * this.y);
+
+      //msg box
+      noStroke();
+      fill(191, 207, 178);
+      rect(
+        width * 0.55,
+        height * (this.y + 0.015),
+        width * 0.3,
+        height * 0.05,
+        10
+      );
+
+      //msg
+      fill(66, 77, 105);
+      textAlign(RIGHT);
+      textSize(height * 0.025);
+      text(this.msg, width * 0.83, height * (this.y + 0.04));
+    } else {
+      //msg label
+      fill(213, 220, 240);
+      textAlign(LEFT);
+      textSize(height * 0.018);
+      text(this.time + " | " + this.sender, width * 0.15, height * this.y);
+
+      //msg box
+      noStroke();
+      fill(213, 220, 240);
+      rect(
+        width * 0.15,
+        height * (this.y + 0.015),
+        width * 0.3,
+        height * 0.05,
+        10
+      );
+
+      //msg
+      fill(102, 118, 157);
+      textAlign(LEFT);
+      textSize(height * 0.025);
+      text(this.msg, width * 0.17, height * (this.y + 0.04));
+    }
+  }
+
   display(y) {
     textFont(neucha);
-    textSize(height * 0.05);
-    fill(255);
-    rect(width * 0.3, height * 0.2);
-    text(msg, width * 0.3, height * 0.2);
+    rectMode(CORNER);
 
-    if (sender === "user") {
-      textPosition(width * 0.6, y);
+    if (this.sender === "user") {
+      //msg label
+      fill(213, 220, 240);
+      textAlign(RIGHT);
+      textSize(height * 0.018);
+      text(this.time + " | " + this.sender, width * 0.83, height * y);
+
+      //msg box
+      noStroke();
+      fill(191, 207, 178);
+      rect(width * 0.55, height * (y + 0.015), width * 0.3, height * 0.05, 10);
+
+      //msg
+      fill(66, 77, 105);
+      textAlign(RIGHT);
+      textSize(height * 0.025);
+      text(this.msg, width * 0.83, height * (y + 0.04));
     } else {
-      textPosition(width * 0.2, y);
+      //msg label
+      fill(213, 220, 240);
+      textAlign(LEFT);
+      textSize(height * 0.018);
+      text(this.time + " | " + this.sender, width * 0.15, height * y);
+
+      //msg box
+      noStroke();
+      fill(213, 220, 240);
+      rect(width * 0.15, height * (y + 0.015), width * 0.3, height * 0.05, 10);
+
+      //msg
+      fill(102, 118, 157);
+      textAlign(LEFT);
+      textSize(height * 0.025);
+      text(this.msg, width * 0.17, height * (y + 0.04));
     }
   }
 }
