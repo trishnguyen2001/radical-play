@@ -24,6 +24,8 @@ let bots = [];
 let playerPic;
 let homeBot;
 let botPic;
+let chatPic;
+let c;
 
 //buttons
 let startBtn;
@@ -31,6 +33,7 @@ let backBtn;
 let restartBtn;
 let sendBtn;
 let chatBtn;
+let saveBtn;
 
 //input form
 let inp;
@@ -45,10 +48,7 @@ let inp;
 //light green       #dff0eb    223, 240, 235
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-
-  //scribble
-  scrib = new Scribble();
+  c = createCanvas(windowWidth, windowHeight);
 
   //set up gui
   gui = createGui(undefined, "CARE LEVEL", "QuickSettings");
@@ -98,6 +98,13 @@ function setup() {
   sendBtn.mousePressed(getMsg);
   sendBtn.hide();
 
+  saveBtn = createButton("save chat");
+  saveBtn.position(width * 0.5, height * 0.75);
+  saveBtn.size(width * 0.175, height * 0.05);
+  saveBtn.center("horizontal");
+  saveBtn.mousePressed(saveChat);
+  saveBtn.hide();
+
   //player pfp
   playerPic = loadImage("assets/player.png");
 
@@ -105,7 +112,7 @@ function setup() {
   homeBot = loadImage("assets/homepg.png");
 
   //game vars
-  limit = int(random(4, 7));
+  limit = int(random(6, 9));
   score = 0;
   mi = 0;
   chatbot = "CB";
@@ -207,6 +214,7 @@ function draw() {
 }
 
 function homeScreen() {
+  saveBtn.hide();
   restartBtn.hide();
   backBtn.hide();
   sendBtn.hide();
@@ -232,6 +240,7 @@ function homeScreen() {
 }
 
 function instrScreen() {
+  saveBtn.hide();
   restartBtn.hide();
   backBtn.hide();
   sendBtn.hide();
@@ -275,6 +284,7 @@ function instrScreen() {
 }
 
 function chatScreen() {
+  saveBtn.hide();
   inp.show();
   sendBtn.show();
   chatBtn.hide();
@@ -297,13 +307,34 @@ function chatScreen() {
   showMsgs();
 
   if (score >= limit) {
-    gamestate = "end";
+    textAlign(CENTER);
+    textSize(height * 0.065);
+    fill(195, 232, 222);
+    text("care-bot", width * 0.575, height * 0.035);
+
+    textSize(height * 0.025);
+    fill(213, 220, 240);
+    text(
+      month() + "/" + day() + "/" + year() + " @ " + getTime(),
+      width * 0.575,
+      height * 0.093
+    );
+
+    textSize(height * 0.025);
+    fill(213, 220, 240);
+    text("care level: " + CareLevel, width * 0.575, height * 0.12);
+
+    chatPic = get(width * 0.2, 0, width * 0.75, height * 0.725);
+    setTimeout(() => {
+      gamestate = "end";
+    }, 100);
   }
 }
 
 function endScreen() {
   backBtn.hide();
   restartBtn.show();
+  saveBtn.show();
   chatBtn.hide();
   sendBtn.hide();
   inp.hide();
@@ -339,6 +370,10 @@ function keyPressed() {
   }
 }
 
+function saveChat() {
+  save(chatPic, getTime() + "-chat-bot.png");
+}
+
 function getTime() {
   return hour() + ":" + minute() + ":" + second();
 }
@@ -372,11 +407,15 @@ function getMsg() {
   console.log(msgs[mi].time + " > " + msgs[mi].sender + " : " + msgs[mi].msg);
   mi++;
   score++;
-  inp.value("");
+  inp.value("please wait for CB to respond!");
 
   //bot response
-  msgs[mi] = respond(msg);
-  mi++;
+  let t = int(random(500, 2250));
+  setTimeout(() => {
+    msgs[mi] = respond(msg);
+    mi++;
+    inp.value("");
+  }, t);
 
   // console.log(`mi = ${mi}`);
   // console.log(msgs);
@@ -388,18 +427,6 @@ function showMsgs() {
     //msgs[i].setY(y);
     msgs[i].display(y);
     y += 0.05;
-    // console.log("showMsgs: y = " + msgs[i].y);
-    // if (y >= 0.78) {
-    //   scrollMsgs();
-    //   y = 0.75;
-    // }
-  }
-}
-
-function scrollMsgs() {
-  for (let i = 0; i < mi; i++) {
-    msgs[i].redraw(y - 0.2);
-    console.log("scrolling: y = " + msgs[i].y);
   }
 }
 
@@ -408,10 +435,6 @@ class Msg {
     this.time = time;
     this.msg = msg;
     this.sender = sender;
-  }
-
-  setY(y) {
-    this.y = y;
   }
 
   display(y) {
