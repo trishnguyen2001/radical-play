@@ -20,6 +20,7 @@ let msgs = [];
 let mi;
 let chatbot;
 let y;
+let lines;
 let bots = [];
 let playerPic;
 let homeBot;
@@ -116,7 +117,6 @@ function setup() {
   score = 0;
   mi = 0;
   chatbot = "CB";
-  y = 0.33;
   gamestate = "home";
 }
 
@@ -284,6 +284,7 @@ function instrScreen() {
 }
 
 function chatScreen() {
+  lines = 1;
   saveBtn.hide();
   inp.show();
   sendBtn.show();
@@ -291,7 +292,7 @@ function chatScreen() {
   startBtn.hide();
   backBtn.show();
   background(66, 77, 105);
-  7;
+
   //text setup
   textFont(neucha);
   textSize(height * 0.1);
@@ -400,6 +401,38 @@ function reset() {
   y = 0.33;
 }
 
+function reformatTxt(msg) {
+  let l = 1;
+  let reformatted = "";
+  let prev = 0;
+  let counter = 1;
+  for (let i = 0; i < msg.length; i++) {
+    if (msg.length - i <= 17) {
+      reformatted += msg.substring(prev, msg.length);
+      console.log(
+        `1: i = ${i} counter = ${counter} reformatted = ${reformatted}`
+      );
+      break;
+    } else if (counter >= 17) {
+      reformatted += msg.substring(prev, i) + "\n";
+      console.log(
+        `2: i = ${i} count = ${counter} prev = ${prev} reformatted = ${reformatted}`
+      );
+      counter = 0;
+      prev = i + 1;
+      l++;
+      counter++;
+    } else {
+      console.log(`3: i = ${i} counter = ${counter}`);
+      counter++;
+      continue;
+    }
+  }
+  console.log(reformatted);
+  lines = l;
+  return reformatted;
+}
+
 function getMsg() {
   msg = inp.value();
   let current = new Msg(getTime(), msg, "user");
@@ -422,11 +455,11 @@ function getMsg() {
 }
 
 function showMsgs() {
-  let y = 0.19;
+  y = 0.19;
   for (let i = 0; i < mi; i++) {
     //msgs[i].setY(y);
     msgs[i].display(y);
-    y += 0.05;
+    y += 0.05 * lines;
   }
 }
 
@@ -470,7 +503,10 @@ class Msg {
       fill(66, 77, 105);
       textAlign(RIGHT);
       textSize(height * 0.025);
-      text(this.msg, width * 0.865, height * (y + 0.015) + msgBoxCenter);
+
+      let r = reformatTxt(this.msg);
+
+      text(r, width * 0.865, height * (y + 0.015) + msgBoxCenter);
     } else {
       //msg label
       fill(213, 220, 240);
@@ -500,7 +536,10 @@ class Msg {
       fill(102, 118, 157);
       textAlign(LEFT);
       textSize(height * 0.025);
-      text(this.msg, width * 0.29, height * (y + 0.015) + msgBoxCenter);
+
+      let r = reformatTxt(this.msg);
+
+      text(r, width * 0.29, height * (y + 0.015) + msgBoxCenter);
     }
   }
 }
