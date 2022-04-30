@@ -35,6 +35,8 @@ let restartBtn;
 let sendBtn;
 let chatBtn;
 let saveBtn;
+let backBtnA;
+let artStmtBtn;
 
 //input form
 let inp;
@@ -80,6 +82,13 @@ function setup() {
   chatBtn.mousePressed(startChat);
   chatBtn.hide();
 
+  artStmtBtn = createButton("artist's statement");
+  artStmtBtn.size(width * 0.2, height * 0.04);
+  artStmtBtn.position(width * 0.475, height * 0.8);
+  artStmtBtn.center("horizontal");
+  artStmtBtn.mousePressed(viewArtStmt);
+  artStmtBtn.hide();
+
   restartBtn = createButton("retry");
   restartBtn.position(width * 0.5, height * 0.6);
   restartBtn.size(width * 0.3, height * 0.1);
@@ -92,6 +101,11 @@ function setup() {
   backBtn.position(width * 0.01, height * 0.02);
   backBtn.mousePressed(reset);
   backBtn.hide();
+
+  backBtnA = createButton("back");
+  backBtnA.position(width * 0.01, height * 0.02);
+  backBtnA.mousePressed(reset);
+  backBtnA.hide();
 
   sendBtn = createButton("send");
   sendBtn.position(width * 0.85, height * 0.9);
@@ -191,6 +205,9 @@ function draw() {
     case "home":
       homeScreen();
       break;
+    case "artstmt":
+      artStmtScreen();
+      break;
     case "instr":
       instrScreen();
       break;
@@ -208,17 +225,16 @@ function draw() {
   if (score > 20) {
     gamestate = "end";
   }
-
-  //displays msgs
-  //showMsgs();
 }
 
 function homeScreen() {
   saveBtn.hide();
   restartBtn.hide();
   backBtn.hide();
+  backBtnA.hide();
   sendBtn.hide();
   chatBtn.hide();
+  artStmtBtn.show();
   gui.hide();
   inp.hide();
   startBtn.show();
@@ -246,6 +262,8 @@ function instrScreen() {
   sendBtn.hide();
   chatBtn.show();
   startBtn.hide();
+  backBtnA.hide();
+  artStmtBtn.hide();
   gui.hide();
   inp.hide();
   background(66, 77, 105);
@@ -283,6 +301,35 @@ function instrScreen() {
   );
 }
 
+function artStmtScreen() {
+  saveBtn.hide();
+  restartBtn.hide();
+  backBtn.hide();
+  sendBtn.hide();
+  chatBtn.hide();
+  startBtn.hide();
+  artStmtBtn.hide();
+  backBtnA.show();
+  gui.hide();
+  inp.hide();
+  background(66, 77, 105);
+
+  //text setup
+  textFont(neucha);
+  textSize(height * 0.08);
+  textAlign(CENTER, CENTER);
+  fill(195, 232, 222);
+  text("artist statement", width * 0.5, height * 0.1);
+
+  textSize(height * 0.03);
+  fill(213, 220, 240);
+  text(
+    "I often think about how much people place emphasis on seeming like they care \nand not on how much they actually care.\nIt is commonplace to put up a front of being interested when someone talks to you —\neven more so when people become vulnerable with you.\nI also find myself doing this.\nA lot of people do this from a place of not wanting to hurt others,\nbut I wonder why the care can’t come from a place of genuine concern more.\nI still don’t know if there’s an easy answer to this,\nbut I hope my project will help people become more aware of this.\n\nPlease use this platform to reflect or to simply get your feelings off your chest!\n\nThank you for your time :) \n\n- Trish Nguyen",
+    width * 0.5,
+    height * 0.5
+  );
+}
+
 function chatScreen() {
   lines = 1;
   saveBtn.hide();
@@ -290,6 +337,8 @@ function chatScreen() {
   sendBtn.show();
   chatBtn.hide();
   startBtn.hide();
+  backBtnA.hide();
+  artStmtBtn.hide();
   backBtn.show();
   background(66, 77, 105);
 
@@ -338,6 +387,8 @@ function endScreen() {
   saveBtn.show();
   chatBtn.hide();
   sendBtn.hide();
+  backBtnA.hide();
+  artStmtBtn.hide();
   inp.hide();
   gui.hide();
   background(66, 77, 105);
@@ -391,6 +442,10 @@ function startGame() {
 
 function startChat() {
   gamestate = "chat";
+}
+
+function viewArtStmt() {
+  gamestate = "artstmt";
 }
 
 function reset() {
