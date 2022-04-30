@@ -6,7 +6,7 @@ I often think about how much people place emphasis on seeming like they care and
 
 ### CONCEPT
 
-My project will allow its users to rant their thoughts and feelings in a chat room format, and the program will respond. Depending on what “care level” the user sets, the program will send different responses. For example, if the user wants the program to respond sympathetically to their rant, they will set the care level to high. This project was meant to make people question their default responses when
+My project will allow its users to rant their thoughts and feelings in a chat room format, and the program will respond. Depending on what “care level” the user sets, the program will send different responses. For example, if the user wants the program to respond sympathetically to their rant, they will set the care level to high. This project was meant to make people question their default responses when others open up to them about hardships. It can be hard to know what to say, but I think we could all be a bit more genuine in our responses.
 
 ### SOFTWARE
 
