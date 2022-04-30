@@ -11,8 +11,6 @@ My project will allow its users to rant their thoughts and feelings in a chat ro
 ### SOFTWARE
 
 - [p5.gui](https://github.com/bitcraftlab/p5.gui)
-- [p5.scribble.js](https://github.com/generative-light/p5.scribble.js)
-- [p5.RiTa](https://rednoise.org/rita/)
 
 ## TIMELINE
 
