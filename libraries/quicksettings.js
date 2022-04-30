@@ -79,7 +79,7 @@
     link.id = "theme";
     link.rel = "stylesheet";
     link.type = "text/css";
-    link.href = "quicksettings_white.min.css";
+    link.href = "stylesheets/quicksettings_white.min.css";
     link.media = "all";
     document.head.appendChild(link);
     cssInjected = true;
