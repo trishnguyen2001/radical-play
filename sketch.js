@@ -148,10 +148,10 @@ function preload() {
       pic: null,
       responses: [
         "nobody fucking cares",
-        "wtf why do you think i'd want\nto listen to this?",
+        "wtf why do you think i'd want to listen to this?",
         "ok and?? :/",
         "ummm ok???",
-        "that sounds like a you\nproblem tbh",
+        "that sounds like a you problem tbh",
       ],
     },
     //care lvl 2
@@ -185,10 +185,10 @@ function preload() {
     {
       pic: null,
       responses: [
-        "i'll always be here for you\nok? ):",
+        "i'll always be here for you ok?\n):",
         "can i do anything?",
         "omg are you ok?",
-        "i'm sure you did your best with\nwhat you had\ni'm proud of you",
+        "i'm sure you did your best with what you had i'm proud of you",
         "everything will be ok!!",
       ],
     },
@@ -462,23 +462,23 @@ function reformatTxt(msg) {
   let prev = 0;
   let counter = 1;
   for (let i = 0; i < msg.length; i++) {
-    if (msg.length - i <= 17) {
+    if (msg.length - i <= 18) {
       reformatted += msg.substring(prev, msg.length);
-      console.log(
-        `1: i = ${i} counter = ${counter} reformatted = ${reformatted}`
-      );
+      //console.log(
+      //  `1: i = ${i} counter = ${counter} reformatted = ${reformatted}`
+      //);
       break;
-    } else if (counter >= 17) {
+    } else if (counter >= 15) {
       reformatted += msg.substring(prev, i) + "\n";
-      console.log(
-        `2: i = ${i} count = ${counter} prev = ${prev} reformatted = ${reformatted}`
-      );
+      // console.log(
+      //  `2: i = ${i} count = ${counter} prev = ${prev} reformatted = ${reformatted}`
+      //);
       counter = 0;
-      prev = i + 1;
+      prev = i;
       l++;
       counter++;
     } else {
-      console.log(`3: i = ${i} counter = ${counter}`);
+      // console.log(`3: i = ${i} counter = ${counter}`);
       counter++;
       continue;
     }
@@ -543,9 +543,10 @@ class Msg {
 
       //msg box
       let msgBoxHeight;
-      if (this.msg.length > 28) {
-        let x = int(this.msg.length / 28);
-        msgBoxHeight = height * 0.1 * x;
+      if (this.msg.length > 17) {
+        lines = int(this.msg.length / 17);
+        msgBoxHeight = height * 0.05 * lines;
+        console.log(lines);
       } else {
         msgBoxHeight = height * 0.05;
       }
@@ -557,7 +558,7 @@ class Msg {
       let msgBoxCenter = msgBoxHeight * 0.5;
       fill(66, 77, 105);
       textAlign(RIGHT);
-      textSize(height * 0.025);
+      textSize(height * 0.02);
 
       let r = reformatTxt(this.msg);
 
@@ -576,9 +577,10 @@ class Msg {
 
       //msg box
       let msgBoxHeight;
-      if (this.msg.length > 28) {
-        let x = int(this.msg.length / 28);
-        msgBoxHeight = height * 0.1 * x;
+      if (this.msg.length > 17) {
+        lines = int(this.msg.length / 17);
+        msgBoxHeight = height * 0.1 * lines;
+        console.log(lines);
       } else {
         msgBoxHeight = height * 0.05;
       }
@@ -590,7 +592,7 @@ class Msg {
       let msgBoxCenter = msgBoxHeight * 0.5;
       fill(102, 118, 157);
       textAlign(LEFT);
-      textSize(height * 0.025);
+      textSize(height * 0.02);
 
       let r = reformatTxt(this.msg);
 
