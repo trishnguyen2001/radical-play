@@ -83,7 +83,7 @@ function setup() {
   chatBtn.hide();
 
   artStmtBtn = createButton("artist's statement");
-  artStmtBtn.size(width * 0.2, height * 0.04);
+  artStmtBtn.size(width * 0.2, height * 0.05);
   artStmtBtn.position(width * 0.475, height * 0.8);
   artStmtBtn.center("horizontal");
   artStmtBtn.mousePressed(viewArtStmt);
